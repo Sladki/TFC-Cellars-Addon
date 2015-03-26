@@ -1,5 +1,6 @@
 package sladki.tfc.Containers;
 
+import sladki.tfc.ModManager;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -19,7 +20,7 @@ public class SlotIceBunker extends Slot {
 		if(Block.getBlockFromItem(itemStack.getItem()) == Blocks.snow) {
 			return true;
 		}
-		if(Block.getBlockFromItem(itemStack.getItem()) == TFCBlocks.Ice) {
+		if(Block.getBlockFromItem(itemStack.getItem()) == ModManager.IceBlock) {
 			return true;
 		}
 		return false;

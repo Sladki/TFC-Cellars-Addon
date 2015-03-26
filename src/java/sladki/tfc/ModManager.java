@@ -8,10 +8,12 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import sladki.tfc.Blocks.BlockCellarDoor;
 import sladki.tfc.Blocks.BlockCellarShelf;
 import sladki.tfc.Blocks.BlockCellarWall;
+import sladki.tfc.Blocks.BlockIce;
 import sladki.tfc.Blocks.BlockIceBunker;
 import sladki.tfc.Items.ItemCellarDoor;
 import sladki.tfc.Items.ItemBlocks.ItemBlockCellarShelf;
 import sladki.tfc.Items.ItemBlocks.ItemBlockCellarWall;
+import sladki.tfc.Items.ItemBlocks.ItemBlockIce;
 import sladki.tfc.Items.ItemBlocks.ItemBlockIceBunker;
 import sladki.tfc.Items.Tools.ItemIceSaw;
 import sladki.tfc.Items.Tools.ItemIceSawHead;
@@ -32,6 +34,7 @@ public class ModManager {
 	public static Block IceBunkerBlock;
 	public static Block CellarShelfBlock;
 	public static Block CellarDoorBlock;
+	public static Block IceBlock;
 	
 	public static Item CellarDoorItem;
 	
@@ -60,6 +63,7 @@ public class ModManager {
 		IceBunkerBlock = new BlockIceBunker(Material.wood).setBlockName("IceBunker").setHardness(5);
 		CellarShelfBlock = new BlockCellarShelf(Material.wood).setBlockName("CellarShelf").setHardness(3);
 		CellarDoorBlock = new BlockCellarDoor(Material.wood).setBlockName("CellarDoor").setHardness(4);
+		IceBlock = new BlockIce().setHardness(0.5F).setLightOpacity(3).setStepSound(Block.soundTypeGlass).setBlockName("Ice");
 	}
 	
 	public static void registerBlocks() {
@@ -67,6 +71,7 @@ public class ModManager {
 		GameRegistry.registerBlock(IceBunkerBlock, ItemBlockIceBunker.class, "IceBunker");
 		GameRegistry.registerBlock(CellarShelfBlock, ItemBlockCellarShelf.class, "CellarShelf");
 		GameRegistry.registerBlock(CellarDoorBlock, "CellarDoor");
+		GameRegistry.registerBlock(IceBlock, ItemBlockIce.class, "Ice");
 	}
 	
 	public static void loadItems() {

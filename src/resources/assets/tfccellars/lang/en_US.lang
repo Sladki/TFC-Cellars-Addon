@@ -2,6 +2,7 @@ tile.CellarWall.name=Cellar Wall
 tile.CellarShelf.name=Cellar Shelf
 tile.IceBunker.name=Ice Bunker
 tile.CellarDoor.name=Cellar Door
+tile.Ice.name=Ice
 item.CellarDoor.name=Cellar Door
 item.BismuthBronzeIceSawBlade.name=Bismuth Bronze Ice Saw Blade
 item.BlackBronzeIceSawBlade.name=Black Bronze Ice Saw Blade

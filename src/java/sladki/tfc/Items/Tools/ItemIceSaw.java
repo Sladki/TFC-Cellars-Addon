@@ -10,6 +10,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import sladki.tfc.Cellars;
+import sladki.tfc.ModManager;
 
 import com.bioxx.tfc.TFCBlocks;
 import com.bioxx.tfc.Items.Tools.ItemTerraTool;
@@ -43,9 +44,9 @@ public class ItemIceSaw extends ItemTerraTool {
 			return false;
 		}
 		
-		if(block == TFCBlocks.Ice) {
+		if(block == TFCBlocks.Ice || block == ModManager.IceBlock) {
 			EntityItem entityItem = new EntityItem(world,
-					x + 0.5, y + 0.5, z + 0.5, new ItemStack(TFCBlocks.Ice, 1));
+					x + 0.5, y + 0.5, z + 0.5, new ItemStack(ModManager.IceBlock, 1));
 			world.spawnEntityInWorld(entityItem);
 			world.setBlockToAir(x, y, z);
 		}

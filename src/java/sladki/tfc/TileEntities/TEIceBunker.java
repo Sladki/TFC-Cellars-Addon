@@ -80,7 +80,7 @@ public class TEIceBunker extends TileEntity implements IInventory {
 							coolantAmount = 3;
 							break;
 						}
-						if(Block.getBlockFromItem(inventory[slot].getItem()) == TFCBlocks.Ice) {
+						if(Block.getBlockFromItem(inventory[slot].getItem()) == ModManager.IceBlock) {
 							decrStackSize(slot, 1);
 							coolantAmount = 6;
 							break;

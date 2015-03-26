@@ -1,0 +1,16 @@
+[
+{
+  "modid": "tfccellarsaddon",
+  "name": "TFC Cellars Addon",
+  "description": "TFC cellars and ice-houses addon",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Sladki"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

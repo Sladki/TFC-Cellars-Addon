@@ -77,8 +77,8 @@ public class BlockIceBunker extends BlockContainer {
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
-		 dropItems(world, x, y, z);
-		 super.breakBlock(world, x, y, z, block, metadata);
+		dropItems(world, x, y, z);
+		super.breakBlock(world, x, y, z, block, metadata);
 	}
 
 	private void dropItems(World world, int x, int y, int z) {

@@ -1,5 +1,7 @@
 package sladki.tfc;
 
+import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -174,6 +176,14 @@ public class ModManager {
 			new ItemStack(RedSteelIceSawHead, 1, 0), Character.valueOf('I'), "stickWood"}));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteelIceSaw, 1), new Object[] { "#","I", Character.valueOf('#'),
 			new ItemStack(SteelIceSawHead, 1, 0), Character.valueOf('I'), "stickWood"}));
+	}
+	
+	public static void registerAnvilRecipes() {
+		
+		Map map = AnvilManager.getInstance().getPlans();
+		if (map.containsKey("iceSaw")) {
+			return;
+		}
 		
 		AnvilManager manager = AnvilManager.getInstance();
 		manager.addPlan("iceSaw", new PlanRecipe(new RuleEnum[]{RuleEnum.DRAWNOTLAST, RuleEnum.UPSETSECONDFROMLAST, RuleEnum.HITLAST}));

@@ -1,5 +1,11 @@
 package sladki.tfc;
 
+import net.minecraftforge.common.MinecraftForge;
+import sladki.tfc.Handlers.ChunkEventHandler;
+import sladki.tfc.Handlers.Network.InitClientWorldPacket;
+
+import com.bioxx.tfc.TerraFirmaCraft;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -18,16 +24,22 @@ public class Cellars {
 	
 	@SidedProxy(clientSide = "sladki.tfc.ClientProxy", serverSide = "sladki.tfc.CommonProxy")
 	public static CommonProxy proxy;
+	
+	@EventHandler
+	public void preInit(FMLInitializationEvent event) {
+		proxy.registerTickHandler();
+	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		
+		TerraFirmaCraft.packetPipeline.registerPacket(InitClientWorldPacket.class);
+		MinecraftForge.EVENT_BUS.register(new ChunkEventHandler());
+
 		ModManager.loadBlocks();
-		ModManager.registerBlocks();
-		
 		ModManager.loadItems();
-		ModManager.registerItems();
 		
+		ModManager.registerBlocks();
+		ModManager.registerItems();
 		ModManager.registerRecipes();
 		
 		proxy.init();

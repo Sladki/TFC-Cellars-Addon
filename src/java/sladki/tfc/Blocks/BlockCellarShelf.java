@@ -1,6 +1,7 @@
 package sladki.tfc.Blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
@@ -14,13 +15,12 @@ import net.minecraft.world.World;
 import sladki.tfc.Cellars;
 import sladki.tfc.TileEntities.TECellarShelf;
 
-import com.bioxx.tfc.Blocks.BlockTerraContainer;
 import com.bioxx.tfc.Core.TFCTabs;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockCellarShelf extends BlockTerraContainer {
+public class BlockCellarShelf extends BlockContainer {
 	
 	public static IIcon textureSide;
 	public static int renderId = 0;
@@ -76,7 +76,6 @@ public class BlockCellarShelf extends BlockTerraContainer {
 		
 		TECellarShelf tileEntity = (TECellarShelf) world.getTileEntity(x, y, z);
 		if(tileEntity != null) {
-			//tileEntity.getInfo(player);
 			player.openGui(Cellars.instance, 1, world, x, y, z);
 			return true;
 		}
@@ -90,8 +89,8 @@ public class BlockCellarShelf extends BlockTerraContainer {
 	
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
-		 dropItems(world, x, y, z);
-		 super.breakBlock(world, x, y, z, block, metadata);
+		dropItems(world, x, y, z);
+		super.breakBlock(world, x, y, z, block, metadata);
 	}
 
 	private void dropItems(World world, int x, int y, int z) {

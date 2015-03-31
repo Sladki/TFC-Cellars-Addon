@@ -11,7 +11,6 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.Constants;
-import sladki.tfc.ModManager;
 
 import com.bioxx.tfc.Core.TFC_Core;
 import com.bioxx.tfc.Core.TFC_Time;
@@ -24,17 +23,12 @@ public class TECellarShelf extends TileEntity implements IInventory {
 	private ItemStack[] inventory;
 	
 	private boolean inCellar = false;
-	private int temperature = 5;
+	private int temperature = 0;
 	
-	private int updateTickCounter = 1200;
-	private long lastUpdate = 0;
+	private int updateTickCounter = 0;
 	
 	public TECellarShelf() {
 		inventory = new ItemStack[getSizeInventory()];
-	}
-	
-	public void getInfo(EntityPlayer player) {
-		player.addChatMessage(new ChatComponentText("" + inCellar + "  " + temperature));
 	}
 	
 	@Override
@@ -43,37 +37,21 @@ public class TECellarShelf extends TileEntity implements IInventory {
 			return;
 		}
 		
-		if(updateTickCounter >= 1200) {
-			getCellarInfo();
+		if(updateTickCounter >= 4) {
+			if(inCellar) {
+				decayTick();
+			} else {
+				TFC_Core.handleItemTicking(this, worldObj, xCoord, yCoord, zCoord);
+			}
 			updateTickCounter = 0;
-		}
-
-		if(inCellar) {
-			decayTick();
-		} else {
-			TFC_Core.handleItemTicking(this, worldObj, xCoord, yCoord, zCoord);
 		}
 		
 		updateTickCounter++;
 	}
 	
-	private void getCellarInfo() {
-		for(int y = -2; y <= -1; y++) {
-			for(int z = -2; z <= 2; z++) {
-				for(int x = -2; x <= 2; x++) {
-					if(worldObj.getBlock(xCoord + x, yCoord + y, zCoord + z) == ModManager.IceBunkerBlock) {
-						TEIceBunker tileEntity = (TEIceBunker) worldObj.getTileEntity(xCoord + x, yCoord + y, zCoord + z);
-						if(tileEntity != null && tileEntity instanceof TEIceBunker) {
-							temperature = tileEntity.getCellarTemperature();
-							inCellar = tileEntity.isCellarComplete();
-							return;
-						}
-					}
-				}
-			}
-		}
-		temperature = 5;
-		inCellar = false;
+	public void updateShelf(boolean inCellar, int temp) {
+		this.inCellar		= inCellar;
+		this.temperature	= temp;
 	}
 	
 	private void decayTick() {

@@ -1,11 +1,16 @@
 package sladki.tfc.Blocks;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import com.bioxx.tfc.Blocks.Vanilla.BlockCustomIce;
+import com.bioxx.tfc.Core.TFC_Climate;
 
 public class BlockIce extends BlockCustomIce {
 
@@ -19,15 +24,10 @@ public class BlockIce extends BlockCustomIce {
 	}
 	
 	@Override
-	protected Block getBlockMelt(World world, int i, int j, int k, boolean moving) {
-		int meta = world.getBlockMetadata(i,j,k);
-		Block block = world.getBlock(i,j,k);
-		
-		if(block != this) {
-			return block;
+	public void updateTick(World world, int x, int y, int z, Random random) {
+		if(TFC_Climate.getHeightAdjustedTemp(world, x, y, z) > 3) {
+			world.setBlockToAir(x, y, z);
 		}
-			
-		return Blocks.air;
 	}
 	
 }

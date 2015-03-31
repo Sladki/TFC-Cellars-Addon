@@ -17,9 +17,6 @@ public class SlotIceBunker extends Slot {
 	
 	@Override
 	public boolean isItemValid(ItemStack itemStack) {
-		if(Block.getBlockFromItem(itemStack.getItem()) == Blocks.snow) {
-			return true;
-		}
 		if(Block.getBlockFromItem(itemStack.getItem()) == ModManager.IceBlock) {
 			return true;
 		}

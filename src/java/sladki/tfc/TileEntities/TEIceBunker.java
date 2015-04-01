@@ -18,6 +18,7 @@ import sladki.tfc.ModManager;
 import sladki.tfc.Blocks.BlockCellarDoor;
 
 import com.bioxx.tfc.TFCBlocks;
+import com.bioxx.tfc.Core.TFC_Climate;
 import com.bioxx.tfc.Core.TFC_Time;
 
 public class TEIceBunker extends TileEntity implements IInventory {
@@ -31,7 +32,7 @@ public class TEIceBunker extends TileEntity implements IInventory {
 	private int[] oldSize = new int[4];		//need in order to update containers if a cellar has become not complete
 	private int[] size = new int[4];		//internal size, +z -x -z + x
 	private boolean isComplete = false;
-	private int temperature = -1;
+	private float temperature = -1;
 	private int updateTickCounter = 1200;
 	private int currentRow;
 	private boolean updatingContainers;
@@ -114,21 +115,21 @@ public class TEIceBunker extends TileEntity implements IInventory {
 	private boolean updateCellar(boolean checkCompliance) {
 		
 		boolean wasComplete = isComplete;
-		int oldTemperature = temperature;
-		
+		float oldTemperature = temperature;
 		temperature = 5;
 		
 		if(checkCompliance) {
 			isComplete = isStructureComplete();
 		}
 
-		if(isComplete) {			
+		if(isComplete) {	
+			float outsideTemp = TFC_Climate.getHeightAdjustedTemp(this.worldObj, xCoord, yCoord + 1, zCoord);
 			if(coolantAmount <= 0) {
 				for(int slot = 3; slot >= 0; slot--) {
 					if(inventory[slot] != null) {
 						if(Block.getBlockFromItem(inventory[slot].getItem()) == ModManager.IceBlock) {
 							lastUpdate = TFC_Time.getTotalDays();
-							coolantAmount = 120;
+							coolantAmount = coolantAmount + 120;
 							decrStackSize(slot, 1);
 							break;
 						}
@@ -138,11 +139,17 @@ public class TEIceBunker extends TileEntity implements IInventory {
 			if(coolantAmount > 0) {
 				temperature = 1;
 				if(lastUpdate < TFC_Time.getTotalDays()) {
-					coolantAmount = coolantAmount - (11 + (size[1] + size[3] + 1) * (size[0] + size[2] + 1));
+					if(outsideTemp > -10) {	//magic
+						int volume = (size[1] + size[3] + 1) * (size[0] + size[2] + 1);
+						coolantAmount = coolantAmount - (int)(0.1 * volume * outsideTemp + volume + 2);
+					}
 					lastUpdate = lastUpdate++;
 				}
 			}
 			temperature = temperature + doorsLoss();
+			if(temperature > outsideTemp) {
+				temperature = outsideTemp;
+			}
 		}
 		
 		if(wasComplete == isComplete && oldTemperature == temperature) {
@@ -307,9 +314,10 @@ public class TEIceBunker extends TileEntity implements IInventory {
 			return 0;
 		} else if(block == ModManager.CellarDoorBlock) {
 			return 1;
-		} else if(block == Blocks.air || block == ModManager.CellarShelfBlock || block == TFCBlocks.Barrel) {
+		} else if(block == ModManager.CellarShelfBlock || block == TFCBlocks.Barrel || block.isAir(this.worldObj, x, y, z)) {
 			return 2;
 		}
+		//System.out.println(x + " " + y + " " + z + " " + block.getUnlocalizedName());
 		return -1;
 	}
 	
@@ -389,10 +397,7 @@ public class TEIceBunker extends TileEntity implements IInventory {
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		//if(Block.getBlockFromItem(stack.getItem()) == TFCBlocks.Ice || Block.getBlockFromItem(stack.getItem()) == Blocks.snow) {
-			return true;
-		//}
-		//return false;
+		return true;
 	}
 	
 	@Override

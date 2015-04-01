@@ -23,7 +23,7 @@ public class TECellarShelf extends TileEntity implements IInventory {
 	private ItemStack[] inventory;
 	
 	private boolean inCellar = false;
-	private int temperature = 0;
+	private float temperature = 0;
 	
 	private int updateTickCounter = 0;
 	
@@ -49,7 +49,7 @@ public class TECellarShelf extends TileEntity implements IInventory {
 		updateTickCounter++;
 	}
 	
-	public void updateShelf(boolean inCellar, int temp) {
+	public void updateShelf(boolean inCellar, float temp) {
 		this.inCellar		= inCellar;
 		this.temperature	= temp;
 	}

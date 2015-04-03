@@ -8,7 +8,7 @@ public class ChunkEventHandler {
 
 	@SubscribeEvent
 	public void onLoadWorld(WorldEvent.Load event) {
-		if(!event.world.isRemote && event.world.provider.dimensionId == 0) {
+		if(event.world.provider.dimensionId == 0) {
 			ModManager.registerAnvilRecipes();
 		}
 	}

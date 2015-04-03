@@ -3,7 +3,6 @@ package sladki.tfc;
 import net.minecraft.item.ItemStack;
 import sladki.tfc.Blocks.BlockCellarShelf;
 import sladki.tfc.Render.RenderCellarShelf;
-import codechicken.nei.api.API;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
@@ -23,9 +22,9 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
-	public void tweakNEI() {
+	public void hideItemsNEI() {
 		if(Loader.isModLoaded("NotEnoughItems")) {
-			API.hideItem(new ItemStack(ModManager.CellarDoorBlock));
+			codechicken.nei.api.API.hideItem(new ItemStack(ModManager.CellarDoorBlock));
 		}
 	}
 }

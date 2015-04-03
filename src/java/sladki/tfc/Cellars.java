@@ -2,10 +2,6 @@ package sladki.tfc;
 
 import net.minecraftforge.common.MinecraftForge;
 import sladki.tfc.Handlers.ChunkEventHandler;
-import sladki.tfc.Handlers.Network.InitClientWorldPacket;
-
-import com.bioxx.tfc.TerraFirmaCraft;
-
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -17,7 +13,7 @@ public class Cellars {
 	
 	public static final String MODID = "tfccellars";
 	public static final String MODNAME = "CellarsAddon";
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "1.03";
 	
 	@Instance("tfccellars")
     public static Cellars instance;
@@ -26,27 +22,21 @@ public class Cellars {
 	public static CommonProxy proxy;
 	
 	@EventHandler
-	public void preInit(FMLInitializationEvent event) {
-		proxy.registerTickHandler();
-	}
-
-	@EventHandler
-	public void init(FMLInitializationEvent event) {
-		TerraFirmaCraft.packetPipeline.registerPacket(InitClientWorldPacket.class);
+	public void initialize(FMLInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(new ChunkEventHandler());
-
-		ModManager.loadBlocks();
-		ModManager.loadItems();
 		
+		ModManager.loadBlocks();
 		ModManager.registerBlocks();
+				
+		ModManager.loadItems();
 		ModManager.registerItems();
+		
+		ModManager.registerTileEntities();
 		ModManager.registerRecipes();
 		
-		proxy.init();
 		proxy.registerRenderInformation();
-		
-		//Use this to remove the door block from NEI
-		proxy.tweakNEI();
+		proxy.registerGuiHandler();
+		proxy.hideItemsNEI();
 	}
-
+	
 }

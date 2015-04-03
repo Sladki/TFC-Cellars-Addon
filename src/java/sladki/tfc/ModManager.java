@@ -19,6 +19,8 @@ import sladki.tfc.Items.ItemBlocks.ItemBlockIce;
 import sladki.tfc.Items.ItemBlocks.ItemBlockIceBunker;
 import sladki.tfc.Items.Tools.ItemIceSaw;
 import sladki.tfc.Items.Tools.ItemIceSawHead;
+import sladki.tfc.TileEntities.TECellarShelf;
+import sladki.tfc.TileEntities.TEIceBunker;
 
 import com.bioxx.tfc.TFCItems;
 import com.bioxx.tfc.api.Constant.Global;
@@ -59,6 +61,11 @@ public class ModManager {
 	public static Item WroughtIronIceSaw;
 	public static Item RedSteelIceSaw;
 	public static Item SteelIceSaw;
+	
+	public static void registerTileEntities() {
+		GameRegistry.registerTileEntity(TEIceBunker.class, "IceBunker");
+		GameRegistry.registerTileEntity(TECellarShelf.class, "CellarShelf");
+	}
 	
 	public static void loadBlocks() {
 		CellarWallBlock = new BlockCellarWall(Material.wood).setBlockName("CellarWall").setHardness(4);
@@ -125,7 +132,6 @@ public class ModManager {
 	}
 	
 	public static void registerRecipes() {
-		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CellarDoorItem, 1, 0), new Object[] {
 			"PCP", "PSP", "PCP",
 			Character.valueOf('P'), "woodLumber",
@@ -179,24 +185,25 @@ public class ModManager {
 	}
 	
 	public static void registerAnvilRecipes() {
+		String iceSawPlan = "icesaw";
 		
 		Map map = AnvilManager.getInstance().getPlans();
-		if (map.containsKey("iceSaw")) {
+		if (map.containsKey(iceSawPlan)) {
 			return;
 		}
 		
 		AnvilManager manager = AnvilManager.getInstance();
-		manager.addPlan("iceSaw", new PlanRecipe(new RuleEnum[]{RuleEnum.DRAWNOTLAST, RuleEnum.UPSETSECONDFROMLAST, RuleEnum.HITLAST}));
+		manager.addPlan(iceSawPlan, new PlanRecipe(new RuleEnum[]{RuleEnum.DRAWNOTLAST, RuleEnum.UPSETSECONDFROMLAST, RuleEnum.HITLAST}));
 		
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BismuthBronzeIngot2x), null, "iceSaw", AnvilReq.BISMUTHBRONZE, new ItemStack(BismuthBronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BlackBronzeIngot2x), null, "iceSaw", AnvilReq.BLACKBRONZE, new ItemStack(BlackBronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BlackSteelIngot2x), null, "iceSaw", AnvilReq.BLACKSTEEL, new ItemStack(BlackSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BlueSteelIngot2x), null, "iceSaw", AnvilReq.BLUESTEEL, new ItemStack(BlueSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BronzeIngot2x), null, "iceSaw", AnvilReq.BRONZE, new ItemStack(BronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.CopperIngot2x), null, "iceSaw", AnvilReq.COPPER, new ItemStack(CopperIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.WroughtIronIngot2x), null, "iceSaw", AnvilReq.WROUGHTIRON, new ItemStack(WroughtIronIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.RedSteelIngot2x), null, "iceSaw", AnvilReq.REDSTEEL, new ItemStack(RedSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.SteelIngot2x), null, "iceSaw", AnvilReq.STEEL, new ItemStack(SteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BismuthBronzeIngot2x), null, iceSawPlan, false, AnvilReq.BISMUTHBRONZE, new ItemStack(BismuthBronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BlackBronzeIngot2x), null, iceSawPlan, false, AnvilReq.BLACKBRONZE, new ItemStack(BlackBronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BlackSteelIngot2x), null, iceSawPlan, false, AnvilReq.BLACKSTEEL, new ItemStack(BlackSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BlueSteelIngot2x), null, iceSawPlan, false, AnvilReq.BLUESTEEL, new ItemStack(BlueSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BronzeIngot2x), null, iceSawPlan, false, AnvilReq.BRONZE, new ItemStack(BronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.CopperIngot2x), null, iceSawPlan, false, AnvilReq.COPPER, new ItemStack(CopperIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.WroughtIronIngot2x), null, iceSawPlan, false, AnvilReq.WROUGHTIRON, new ItemStack(WroughtIronIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.RedSteelIngot2x), null, iceSawPlan, false, AnvilReq.REDSTEEL, new ItemStack(RedSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.SteelIngot2x), null, iceSawPlan, false, AnvilReq.STEEL, new ItemStack(SteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
 	}
 	
 }

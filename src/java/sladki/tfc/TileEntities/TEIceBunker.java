@@ -162,16 +162,21 @@ public class TEIceBunker extends TileEntity implements IInventory {
 		int loss = 0;
 		
 		//1st door
-		BlockCellarDoor door = (BlockCellarDoor) this.worldObj.getBlock(
+		Block door = this.worldObj.getBlock(
 				xCoord + entrance[0], yCoord + 1, zCoord + entrance[1]);
-		if(door != null && door.isDoorOpen(this.worldObj,
-				xCoord + entrance[0], yCoord + 1, zCoord + entrance[1])) {
+		if(door == ModManager.CellarDoorBlock && !((BlockCellarDoor)door).isDoorOpen(this.worldObj,
+				xCoord + entrance[0], yCoord + 1, zCoord + entrance[1])) {	
+		
+		} else {
 			loss = 1;
 		}
 		
 		//2nd door
-		door = (BlockCellarDoor) this.worldObj.getBlock(xCoord + entrance[0] + entrance[2], yCoord + 1, zCoord + entrance[1] + entrance[3]);
-		if(door != null && door.isDoorOpen(this.worldObj, xCoord + entrance[0] + entrance[2], yCoord + 1, zCoord + entrance[1] + entrance[3])) {
+		door = this.worldObj.getBlock(xCoord + entrance[0] + entrance[2], yCoord + 1, zCoord + entrance[1] + entrance[3]);
+		if(door == ModManager.CellarDoorBlock && !((BlockCellarDoor)door).isDoorOpen(this.worldObj,
+				xCoord + entrance[0] + entrance[2], yCoord + 1, zCoord + entrance[1] + entrance[3])) {
+		
+		} else {
 			if(loss > 0) {
 				loss = 4;
 			} else {
@@ -314,7 +319,8 @@ public class TEIceBunker extends TileEntity implements IInventory {
 			return 0;
 		} else if(block == ModManager.CellarDoorBlock) {
 			return 1;
-		} else if(block == ModManager.CellarShelfBlock || block == TFCBlocks.Barrel || block.isAir(this.worldObj, x, y, z)) {
+		} else if(block == ModManager.CellarShelfBlock || block == TFCBlocks.Barrel || block == Blocks.wall_sign || block == Blocks.standing_sign ||
+				block.isAir(this.worldObj, x, y, z)) {
 			return 2;
 		}
 		//System.out.println(x + " " + y + " " + z + " " + block.getUnlocalizedName());

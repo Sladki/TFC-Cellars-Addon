@@ -17,9 +17,9 @@ import net.minecraftforge.common.util.Constants;
 import sladki.tfc.ModManager;
 import sladki.tfc.Blocks.BlockCellarDoor;
 
-import com.bioxx.tfc.TFCBlocks;
 import com.bioxx.tfc.Core.TFC_Climate;
 import com.bioxx.tfc.Core.TFC_Time;
+import com.bioxx.tfc.api.TFCBlocks;
 
 public class TEIceBunker extends TileEntity implements IInventory {
 

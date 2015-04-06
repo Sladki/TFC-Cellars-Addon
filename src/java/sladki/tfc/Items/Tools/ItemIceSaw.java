@@ -12,8 +12,8 @@ import net.minecraft.world.World;
 import sladki.tfc.Cellars;
 import sladki.tfc.ModManager;
 
-import com.bioxx.tfc.TFCBlocks;
 import com.bioxx.tfc.Items.Tools.ItemTerraTool;
+import com.bioxx.tfc.api.TFCBlocks;
 import com.google.common.collect.Sets;
 
 public class ItemIceSaw extends ItemTerraTool {

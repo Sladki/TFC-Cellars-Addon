@@ -22,7 +22,7 @@ import sladki.tfc.Items.Tools.ItemIceSawHead;
 import sladki.tfc.TileEntities.TECellarShelf;
 import sladki.tfc.TileEntities.TEIceBunker;
 
-import com.bioxx.tfc.TFCItems;
+import com.bioxx.tfc.api.TFCItems;
 import com.bioxx.tfc.api.Constant.Global;
 import com.bioxx.tfc.api.Crafting.AnvilManager;
 import com.bioxx.tfc.api.Crafting.AnvilRecipe;
@@ -193,7 +193,7 @@ public class ModManager {
 		}
 		
 		AnvilManager manager = AnvilManager.getInstance();
-		manager.addPlan(iceSawPlan, new PlanRecipe(new RuleEnum[]{RuleEnum.DRAWNOTLAST, RuleEnum.UPSETSECONDFROMLAST, RuleEnum.HITLAST}));
+		manager.addPlan(iceSawPlan, new PlanRecipe(new RuleEnum[]{RuleEnum.HITLAST, RuleEnum.UPSETSECONDFROMLAST, RuleEnum.DRAWNOTLAST}));
 		
 		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BismuthBronzeIngot2x), null, iceSawPlan, false, AnvilReq.BISMUTHBRONZE, new ItemStack(BismuthBronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
 		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BlackBronzeIngot2x), null, iceSawPlan, false, AnvilReq.BLACKBRONZE, new ItemStack(BlackBronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));

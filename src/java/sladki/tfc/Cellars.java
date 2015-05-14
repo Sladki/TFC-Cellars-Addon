@@ -8,12 +8,12 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
-@Mod(name = Cellars.MODNAME, modid = Cellars.MODID, version = Cellars.VERSION, dependencies = "required-after:terrafirmacraft")
+@Mod(name = Cellars.MODNAME, modid = Cellars.MODID, version = Cellars.VERSION, dependencies = "after:terrafirmacraft")
 public class Cellars {
 	
 	public static final String MODID = "tfccellars";
 	public static final String MODNAME = "CellarsAddon";
-	public static final String VERSION = "1.05";
+	public static final String VERSION = "1.06";
 	
 	@Instance("tfccellars")
     public static Cellars instance;

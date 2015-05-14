@@ -51,7 +51,9 @@ public class TEIceBunker extends TileEntity implements IInventory {
 		}*/
 		
 		if(isComplete) {
-			if(temperature <  4) {
+			if(temperature < 0) {
+				player.addChatMessage(new ChatComponentText("It is icy here"));
+			} else if(temperature < 4) {
 				player.addChatMessage(new ChatComponentText("It is freezing here"));
 			} else {
 				player.addChatMessage(new ChatComponentText("The cellar is chilly"));
@@ -128,11 +130,13 @@ public class TEIceBunker extends TileEntity implements IInventory {
 				for(int slot = 3; slot >= 0; slot--) {
 					if(inventory[slot] != null) {
 						if(Block.getBlockFromItem(inventory[slot].getItem()) == ModManager.IceBlock) {
-							lastUpdate = TFC_Time.getTotalDays();
 							coolantAmount = coolantAmount + 120;
-							decrStackSize(slot, 1);
-							break;
+						} else if(Block.getBlockFromItem(inventory[slot].getItem()) == Blocks.snow) {
+							coolantAmount = coolantAmount + 40;
 						}
+						lastUpdate = TFC_Time.getTotalDays();
+						decrStackSize(slot, 1);
+						break;
 					}
 				}
 			}

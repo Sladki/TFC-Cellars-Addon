@@ -12,6 +12,7 @@ import sladki.tfc.Blocks.BlockCellarShelf;
 import sladki.tfc.Blocks.BlockCellarWall;
 import sladki.tfc.Blocks.BlockIce;
 import sladki.tfc.Blocks.BlockIceBunker;
+import sladki.tfc.Handlers.PlayerTickEventHandler;
 import sladki.tfc.Items.ItemCellarDoor;
 import sladki.tfc.Items.ItemBlocks.ItemBlockCellarShelf;
 import sladki.tfc.Items.ItemBlocks.ItemBlockCellarWall;
@@ -61,6 +62,8 @@ public class ModManager {
 	public static Item WroughtIronIceSaw;
 	public static Item RedSteelIceSaw;
 	public static Item SteelIceSaw;
+	
+	private static PlayerTickEventHandler playerTickEventHandler = new PlayerTickEventHandler();
 	
 	public static void registerTileEntities() {
 		GameRegistry.registerTileEntity(TEIceBunker.class, "IceBunker");
@@ -188,7 +191,11 @@ public class ModManager {
 		String iceSawPlan = "icesaw";
 		
 		Map map = AnvilManager.getInstance().getPlans();
-		if (map.containsKey(iceSawPlan)) {
+		if(map.containsKey(iceSawPlan)) {
+			return;
+		}
+		
+		if(AnvilManager.world == null) {
 			return;
 		}
 		
@@ -204,6 +211,10 @@ public class ModManager {
 		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.WroughtIronIngot2x), null, iceSawPlan, false, AnvilReq.WROUGHTIRON, new ItemStack(WroughtIronIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
 		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.RedSteelIngot2x), null, iceSawPlan, false, AnvilReq.REDSTEEL, new ItemStack(RedSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
 		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.SteelIngot2x), null, iceSawPlan, false, AnvilReq.STEEL, new ItemStack(SteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+	}
+	
+	public static PlayerTickEventHandler getPlayerTickEventHandler() {
+		return playerTickEventHandler;
 	}
 	
 }

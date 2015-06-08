@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.Constants;
+import sladki.tfc.ModConfig;
 import sladki.tfc.ModManager;
 import sladki.tfc.Blocks.BlockCellarDoor;
 
@@ -50,10 +51,17 @@ public class TEIceBunker extends TileEntity implements IInventory {
 			player.addChatMessage(new ChatComponentText("Cellar is not complete or not cooled enough"));
 		}*/
 		
+		if(ModConfig.isDebugging) {
+			player.addChatMessage(new ChatComponentText("Temperature: " + temperature + " Coolant: " + coolantAmount));
+			player.addChatMessage(new ChatComponentText("Look at console for more information"));
+			updateCellar(true);
+			return;
+		}
+		
 		if(isComplete) {
 			if(temperature < 0) {
 				player.addChatMessage(new ChatComponentText("It is icy here"));
-			} else if(temperature < 4) {
+			} else if(temperature < ModConfig.cellarTemperature - 1) {
 				player.addChatMessage(new ChatComponentText("It is freezing here"));
 			} else {
 				player.addChatMessage(new ChatComponentText("The cellar is chilly"));
@@ -118,7 +126,8 @@ public class TEIceBunker extends TileEntity implements IInventory {
 		
 		boolean wasComplete = isComplete;
 		float oldTemperature = temperature;
-		temperature = 5;
+		
+		temperature = ModConfig.cellarTemperature;
 		
 		if(checkCompliance) {
 			isComplete = isStructureComplete();
@@ -136,18 +145,19 @@ public class TEIceBunker extends TileEntity implements IInventory {
 						}
 						lastUpdate = TFC_Time.getTotalDays();
 						decrStackSize(slot, 1);
+						temperature = ModConfig.iceHouseTemperature;
 						break;
 					}
 				}
 			}
 			if(coolantAmount > 0) {
-				temperature = 1;
+				temperature = ModConfig.iceHouseTemperature;
 				if(lastUpdate < TFC_Time.getTotalDays()) {
 					if(outsideTemp > -10) {	//magic
 						int volume = (size[1] + size[3] + 1) * (size[0] + size[2] + 1);
-						coolantAmount = coolantAmount - (int)(0.1 * volume * outsideTemp + volume + 2);
+						coolantAmount = coolantAmount - (int)(ModConfig.coolantConsumptionMultiplier * (0.1 * volume * outsideTemp + volume + 2));
 					}
-					lastUpdate = lastUpdate++;
+					lastUpdate++;
 				}
 			}
 			temperature = temperature + doorsLoss();
@@ -202,7 +212,13 @@ public class TEIceBunker extends TileEntity implements IInventory {
 		for(int direction = 0; direction < 4; direction++) {
 			for(int distance = 1; distance < 6; distance++) {
 				//max distance between an ice bunker and a wall is 3
-				if(distance == 5) { return false;	} 
+				if(distance == 5) { 
+					if(ModConfig.isDebugging) {
+						System.out.println("Cellar at " + this.xCoord + " " + this.yCoord + " " + this.zCoord
+								+ " can't find a wall on " + direction + " side");
+					}
+					return false;
+				} 
 				
 				if(direction == 1) {			blockType = getBlockType(-distance, 1, 0); }
 				else if(direction == 3) {	blockType = getBlockType(distance, 1, 0); }
@@ -225,12 +241,12 @@ public class TEIceBunker extends TileEntity implements IInventory {
 			for(int x = -size[1] - 1; x <= size[3] + 1; x++) {
 				for(int z = -size[2] - 1; z <= size[0] + 1; z++) {
 					
-					blockType = getBlockType(x, y, z);
-					
 					//Ice bunker
 					if(y == 0 && x == 0 && z == 0) {
 						continue;
 					}
+					
+					blockType = getBlockType(x, y, z);
 					
 					//Blocks inside the cellar
 					if(y == 1 || y == 2) {
@@ -274,6 +290,12 @@ public class TEIceBunker extends TileEntity implements IInventory {
 							
 							continue;
 						}
+						
+						if(ModConfig.isDebugging) {
+							System.out.println("Cellar at " + this.xCoord + " " + this.yCoord + " " + this.zCoord
+									+ " has too many doors");
+						}
+						
 						return false;
 					}
 					
@@ -287,7 +309,10 @@ public class TEIceBunker extends TileEntity implements IInventory {
 		}
 		
 		if(entrance[0] == 0 && entrance[1] == 0) {
-			System.out.println("No doors");
+			if(ModConfig.isDebugging) {
+				System.out.println("Cellar at " + this.xCoord + " " + this.yCoord + " " + this.zCoord
+						+ " has no doors");
+			}
 			return false;
 		}
 		
@@ -303,6 +328,11 @@ public class TEIceBunker extends TileEntity implements IInventory {
 							if(blockType == 1) {
 								continue;
 							}
+							
+							if(ModConfig.isDebugging) {
+								System.out.println("Cellar at " + this.xCoord + " " + this.yCoord + " " + this.zCoord
+										+ " doesn't have the second door, block there is " + blockType);
+							}
 							return false;
 						}
 					}
@@ -310,10 +340,19 @@ public class TEIceBunker extends TileEntity implements IInventory {
 						continue;
 					}
 					
+					if(ModConfig.isDebugging) {
+						System.out.println("Doors at the cellar at " + this.xCoord + " " + this.yCoord + " " + this.zCoord
+								+ " doesn't surrounded by wall, block there is " + blockType);
+					}
 					return false;
 				}
 			}
-		}		
+		}	
+		
+		if(ModConfig.isDebugging) {
+			System.out.println("Cellar at " + this.xCoord + " " + this.yCoord + " " + this.zCoord + " is complete");
+		}
+		
 		return true;
 	}
 	
@@ -327,7 +366,11 @@ public class TEIceBunker extends TileEntity implements IInventory {
 				block.isAir(this.worldObj, x, y, z)) {
 			return 2;
 		}
-		//System.out.println(x + " " + y + " " + z + " " + block.getUnlocalizedName());
+		
+		if(ModConfig.isDebugging) {
+			System.out.println("Incorrect cellar block at " + x + " " + y + " " + z + " " + block.getUnlocalizedName());
+		}
+		
 		return -1;
 	}
 	

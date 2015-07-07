@@ -35,8 +35,6 @@ public class TEIceBunker extends TileEntity implements IInventory {
 	private boolean isComplete = false;
 	private float temperature = -1;
 	private int updateTickCounter = 1200;
-	private int currentRow;
-	private boolean updatingContainers;
 	
 	
 	public TEIceBunker() {
@@ -51,6 +49,13 @@ public class TEIceBunker extends TileEntity implements IInventory {
 			player.addChatMessage(new ChatComponentText("Cellar is not complete or not cooled enough"));
 		}*/
 		
+		//TODO: delete in release
+		
+		
+		//player.addChatMessage(new ChatComponentText("Size: " + size[0] + " " + size[1] + " " + size[2] + " " + size[3] + " "));*/
+		
+		//
+
 		if(ModConfig.isDebugging) {
 			player.addChatMessage(new ChatComponentText("Temperature: " + temperature + " Coolant: " + coolantAmount));
 			player.addChatMessage(new ChatComponentText("Look at console for more information"));
@@ -76,56 +81,23 @@ public class TEIceBunker extends TileEntity implements IInventory {
 		if(worldObj.isRemote) {
 			return;
 		}
-		
-		//If cellar change its size we have to update containers first, before we check its compliance and change the size
-		//Updating containers row by row to decrease freezes
-		if(updatingContainers) {
-			if((isComplete && currentRow == size[0] + 1) || (!isComplete && currentRow == oldSize[0] + 1)) {
-				updatingContainers = false;
+			
+		//Check cellar compliance once per 1200 ticks, check coolant and update containers once per 100 ticks
+		if(updateTickCounter % 100 == 0) {
+			
+			if(updateTickCounter >= 1200) {
+				updateCellar(true);
+				updateTickCounter = 0;
 			} else {
-				for(int y = 1; y <=2; y++) {
-					if(isComplete) {
-						for(int x = -size[1]; x <= size[3]; x++) {
-							updateContainer(x, y, currentRow);
-						}
-					} else {
-						for(int x = -oldSize[1]; x <= oldSize[3]; x++) {
-							updateContainer(x, y, currentRow);
-						}
-					}
-				}
-				currentRow++;
+				updateCellar(false);
 			}
-			return;
-		} else {
-			//Check cellar compliance once per 1200 ticks, check coolant once per 100 ticks
-			if(updateTickCounter % 100 == 0) {
-				boolean changed = false;
-				
-				if(updateTickCounter >= 1200) {
-					changed = updateCellar(true);
-					updateTickCounter = 0;
-				} else {
-					changed = updateCellar(false);
-				}
-				
-				if(changed) {
-					updatingContainers = true;
-					if(isComplete) {
-						currentRow = -size[2];
-					} else {
-						currentRow = -oldSize[2];
-					}
-				}
-			}
+			
+			updateContainers(false);
 		}
 		updateTickCounter++;
 	}
 	
-	private boolean updateCellar(boolean checkCompliance) {
-		
-		boolean wasComplete = isComplete;
-		float oldTemperature = temperature;
+	private void updateCellar(boolean checkCompliance) {
 		
 		temperature = ModConfig.cellarTemperature;
 		
@@ -165,11 +137,6 @@ public class TEIceBunker extends TileEntity implements IInventory {
 				temperature = outsideTemp;
 			}
 		}
-		
-		if(wasComplete == isComplete && oldTemperature == temperature) {
-			return false;
-		}
-		return true;
 	}
 	
 	private int doorsLoss() {
@@ -372,6 +339,30 @@ public class TEIceBunker extends TileEntity implements IInventory {
 		}
 		
 		return -1;
+	}
+	
+	public void updateContainers(boolean isDestroying) {
+		if(isDestroying) {
+			isComplete = false;
+			oldSize[1] = size[1]; oldSize[3] = size[3];
+			oldSize[2] = size[2]; oldSize[0] = size[0];
+		}
+		
+		for(int y = 1; y <=2; y++) {
+			if(isComplete) {
+				for(int z = -size[2]; z <= size[0]; z++) {
+					for(int x = -size[1]; x <= size[3]; x++) {
+						updateContainer(x, y, z);
+					}
+				}
+			} else {
+				for(int z = -oldSize[2]; z <= oldSize[0]; z++) {
+					for(int x = -oldSize[1]; x <= oldSize[3]; x++) {
+						updateContainer(x, y, z);
+					}
+				}
+			}
+		}
 	}
 	
 	private void updateContainer(int x, int y, int z) {

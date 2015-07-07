@@ -9,6 +9,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import com.bioxx.tfc.Core.TFC_Core;
@@ -24,28 +26,50 @@ public class TECellarShelf extends TileEntity implements IInventory {
 	private boolean inCellar = false;
 	private float temperature = 0;
 	
-	private int updateTickCounter = 0;
+	private int updateTickCounter = 120;
 	
 	public TECellarShelf() {
 		inventory = new ItemStack[getSizeInventory()];
 	}
+	
+	/*public void getShelfInfo(EntityPlayer player) {
+		player.addChatMessage(new ChatComponentText("In cellar: " + inCellar));
+		player.addChatMessage(new ChatComponentText("Temperature: " + temperature));
+	}*/
+	
 	
 	@Override
 	public void updateEntity() {
 		if(worldObj.isRemote) {
 			return;
 		}
-		
-		if(updateTickCounter >= 4) {
-			if(inCellar) {
-				decayTick();
-			} else {
-				TFC_Core.handleItemTicking(this, worldObj, xCoord, yCoord, zCoord);
+
+		//Wait 120 ticks for cellars updates to prevent ticking decay before
+		if(inCellar) {
+			decayTick();
+		} else {
+			if(updateTickCounter > 0) {
+				updateTickCounter--;
+				
+				//To ensure correct work for cellars built in multiple chunks
+				if(updateTickCounter == 100) {
+					World world = this.getWorldObj();
+					
+					world.getBlock(xCoord + 4, 0, zCoord);
+					world.getBlock(xCoord - 4, 0, zCoord);
+					world.getBlock(xCoord, 0, zCoord + 4);
+					world.getBlock(xCoord, 0, zCoord - 4);
+					
+					world.getBlock(xCoord + 4, 0, zCoord - 4);
+					world.getBlock(xCoord + 4, 0, zCoord + 4);
+					world.getBlock(xCoord - 4, 0, zCoord - 4);
+					world.getBlock(xCoord - 4, 0, zCoord + 4);
+				}
+				return;
 			}
-			updateTickCounter = 0;
+			
+			TFC_Core.handleItemTicking(this, worldObj, xCoord, yCoord, zCoord);
 		}
-		
-		updateTickCounter++;
 	}
 	
 	public void updateShelf(boolean inCellar, float temp) {

@@ -76,6 +76,13 @@ public class BlockCellarShelf extends BlockContainer {
 		
 		TECellarShelf tileEntity = (TECellarShelf) world.getTileEntity(x, y, z);
 		if(tileEntity != null) {
+			
+			//TODO:Delete these
+			
+			//tileEntity.getShelfInfo(player);
+			
+			//
+			
 			player.openGui(Cellars.instance, 1, world, x, y, z);
 			return true;
 		}

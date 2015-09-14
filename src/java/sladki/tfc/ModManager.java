@@ -99,15 +99,15 @@ public class ModManager {
 		RedSteelIceSawHead = new ItemIceSawHead().setUnlocalizedName("RedSteelIceSawBlade");
 		SteelIceSawHead = new ItemIceSawHead().setUnlocalizedName("SteelIceSawBlade");
 		
-		BismuthBronzeIceSaw = new ItemIceSaw(TFCItems.BismuthBronzeToolMaterial).setUnlocalizedName("BismuthBronzeIceSaw").setMaxDamage(TFCItems.BismuthBronzeUses);
-		BlackBronzeIceSaw = new ItemIceSaw(TFCItems.BlackBronzeToolMaterial).setUnlocalizedName("BlackBronzeIceSaw").setMaxDamage(TFCItems.BlackBronzeUses);
-		BlackSteelIceSaw = new ItemIceSaw(TFCItems.BlackSteelToolMaterial).setUnlocalizedName("BlackSteelIceSaw").setMaxDamage(TFCItems.BlackSteelUses);
-		BlueSteelIceSaw = new ItemIceSaw(TFCItems.BlueSteelToolMaterial).setUnlocalizedName("BlueSteelIceSaw").setMaxDamage(TFCItems.BlueSteelUses);
-		BronzeIceSaw = new ItemIceSaw(TFCItems.BronzeToolMaterial).setUnlocalizedName("BronzeIceSaw").setMaxDamage(TFCItems.BronzeUses);
-		CopperIceSaw = new ItemIceSaw(TFCItems.CopperToolMaterial).setUnlocalizedName("CopperIceSaw").setMaxDamage(TFCItems.CopperUses);
-		WroughtIronIceSaw = new ItemIceSaw(TFCItems.IronToolMaterial).setUnlocalizedName("WroughtIronIceSaw").setMaxDamage(TFCItems.WroughtIronUses);
-		RedSteelIceSaw = new ItemIceSaw(TFCItems.RedSteelToolMaterial).setUnlocalizedName("RedSteelIceSaw").setMaxDamage(TFCItems.RedSteelUses);
-		SteelIceSaw = new ItemIceSaw(TFCItems.SteelToolMaterial).setUnlocalizedName("SteelIceSaw").setMaxDamage(TFCItems.SteelUses);
+		BismuthBronzeIceSaw = new ItemIceSaw(TFCItems.bismuthBronzeToolMaterial).setUnlocalizedName("BismuthBronzeIceSaw").setMaxDamage(TFCItems.bismuthBronzeUses);
+		BlackBronzeIceSaw = new ItemIceSaw(TFCItems.blackBronzeToolMaterial).setUnlocalizedName("BlackBronzeIceSaw").setMaxDamage(TFCItems.blackBronzeUses);
+		BlackSteelIceSaw = new ItemIceSaw(TFCItems.blackSteelToolMaterial).setUnlocalizedName("BlackSteelIceSaw").setMaxDamage(TFCItems.blackSteelUses);
+		BlueSteelIceSaw = new ItemIceSaw(TFCItems.blueSteelToolMaterial).setUnlocalizedName("BlueSteelIceSaw").setMaxDamage(TFCItems.blueSteelUses);
+		BronzeIceSaw = new ItemIceSaw(TFCItems.bronzeToolMaterial).setUnlocalizedName("BronzeIceSaw").setMaxDamage(TFCItems.bronzeUses);
+		CopperIceSaw = new ItemIceSaw(TFCItems.copperToolMaterial).setUnlocalizedName("CopperIceSaw").setMaxDamage(TFCItems.copperUses);
+		WroughtIronIceSaw = new ItemIceSaw(TFCItems.ironToolMaterial).setUnlocalizedName("WroughtIronIceSaw").setMaxDamage(TFCItems.wroughtIronUses);
+		RedSteelIceSaw = new ItemIceSaw(TFCItems.redSteelToolMaterial).setUnlocalizedName("RedSteelIceSaw").setMaxDamage(TFCItems.redSteelUses);
+		SteelIceSaw = new ItemIceSaw(TFCItems.steelToolMaterial).setUnlocalizedName("SteelIceSaw").setMaxDamage(TFCItems.steelUses);
 	}
 	
 	public static void registerItems() {
@@ -138,22 +138,22 @@ public class ModManager {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CellarDoorItem, 1, 0), new Object[] {
 			"PCP", "PSP", "PCP",
 			Character.valueOf('P'), "woodLumber",
-			Character.valueOf('C'),	new ItemStack(TFCItems.ClayBall),
-			Character.valueOf('S'),	new ItemStack(TFCItems.Straw)
+			Character.valueOf('C'),	new ItemStack(TFCItems.clayBall),
+			Character.valueOf('S'),	new ItemStack(TFCItems.straw)
 		}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CellarWallBlock, 1, 0), new Object[] {
 			"PSP", "C C", "PSP",
 			Character.valueOf('P'), "woodLumber",
-			Character.valueOf('C'),	new ItemStack(TFCItems.ClayBall),
-			Character.valueOf('S'),	new ItemStack(TFCItems.Straw)
+			Character.valueOf('C'),	new ItemStack(TFCItems.clayBall),
+			Character.valueOf('S'),	new ItemStack(TFCItems.straw)
 		}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CellarWallBlock, 1, 0), new Object[] {
 			"PCP", "S S", "PCP",
 			Character.valueOf('P'), "woodLumber",
-			Character.valueOf('C'),	new ItemStack(TFCItems.ClayBall),
-			Character.valueOf('S'),	new ItemStack(TFCItems.Straw)
+			Character.valueOf('C'),	new ItemStack(TFCItems.clayBall),
+			Character.valueOf('S'),	new ItemStack(TFCItems.straw)
 		}));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(IceBunkerBlock, 1, 0), new Object[] {
@@ -202,15 +202,15 @@ public class ModManager {
 		AnvilManager manager = AnvilManager.getInstance();
 		manager.addPlan(iceSawPlan, new PlanRecipe(new RuleEnum[]{RuleEnum.HITLAST, RuleEnum.UPSETSECONDFROMLAST, RuleEnum.DRAWNOTLAST}));
 		
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BismuthBronzeIngot2x), null, iceSawPlan, false, AnvilReq.BISMUTHBRONZE, new ItemStack(BismuthBronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BlackBronzeIngot2x), null, iceSawPlan, false, AnvilReq.BLACKBRONZE, new ItemStack(BlackBronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BlackSteelIngot2x), null, iceSawPlan, false, AnvilReq.BLACKSTEEL, new ItemStack(BlackSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BlueSteelIngot2x), null, iceSawPlan, false, AnvilReq.BLUESTEEL, new ItemStack(BlueSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.BronzeIngot2x), null, iceSawPlan, false, AnvilReq.BRONZE, new ItemStack(BronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.CopperIngot2x), null, iceSawPlan, false, AnvilReq.COPPER, new ItemStack(CopperIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.WroughtIronIngot2x), null, iceSawPlan, false, AnvilReq.WROUGHTIRON, new ItemStack(WroughtIronIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.RedSteelIngot2x), null, iceSawPlan, false, AnvilReq.REDSTEEL, new ItemStack(RedSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
-		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.SteelIngot2x), null, iceSawPlan, false, AnvilReq.STEEL, new ItemStack(SteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.bismuthBronzeIngot2x), null, iceSawPlan, false, AnvilReq.BISMUTHBRONZE, new ItemStack(BismuthBronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.blackBronzeIngot2x), null, iceSawPlan, false, AnvilReq.BLACKBRONZE, new ItemStack(BlackBronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.blackSteelIngot2x), null, iceSawPlan, false, AnvilReq.BLACKSTEEL, new ItemStack(BlackSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.blueSteelIngot2x), null, iceSawPlan, false, AnvilReq.BLUESTEEL, new ItemStack(BlueSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.bronzeIngot2x), null, iceSawPlan, false, AnvilReq.BRONZE, new ItemStack(BronzeIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.copperIngot2x), null, iceSawPlan, false, AnvilReq.COPPER, new ItemStack(CopperIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.wroughtIronIngot2x), null, iceSawPlan, false, AnvilReq.WROUGHTIRON, new ItemStack(WroughtIronIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.redSteelIngot2x), null, iceSawPlan, false, AnvilReq.REDSTEEL, new ItemStack(RedSteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
+		manager.addRecipe(new AnvilRecipe(new ItemStack(TFCItems.steelIngot2x), null, iceSawPlan, false, AnvilReq.STEEL, new ItemStack(SteelIceSawHead, 1)).addRecipeSkill(Global.SKILL_TOOLSMITH));
 	}
 	
 	public static PlayerTickEventHandler getPlayerTickEventHandler() {

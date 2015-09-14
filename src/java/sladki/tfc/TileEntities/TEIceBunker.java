@@ -329,7 +329,7 @@ public class TEIceBunker extends TileEntity implements IInventory {
 			return 0;
 		} else if(block == ModManager.CellarDoorBlock) {
 			return 1;
-		} else if(block == ModManager.CellarShelfBlock || block == TFCBlocks.Barrel || block == Blocks.wall_sign || block == Blocks.standing_sign ||
+		} else if(block == ModManager.CellarShelfBlock || block == TFCBlocks.barrel || block == Blocks.wall_sign || block == Blocks.standing_sign ||
 				block.isAir(this.worldObj, x, y, z)) {
 			return 2;
 		}

@@ -9,7 +9,7 @@ public class ItemBlockCellarWall extends ItemTerraBlock {
 
 	public ItemBlockCellarWall(Block block) {
 		super(block);
-		this.setCreativeTab(TFCTabs.TFCBuilding);
+		this.setCreativeTab(TFCTabs.TFC_BUILDING);
 	}
 	
 }

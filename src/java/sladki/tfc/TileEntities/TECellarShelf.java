@@ -9,14 +9,12 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 import com.bioxx.tfc.Core.TFC_Core;
 import com.bioxx.tfc.Core.TFC_Time;
 import com.bioxx.tfc.api.TFCOptions;
-import com.bioxx.tfc.api.Constant.Global;
 import com.bioxx.tfc.api.Interfaces.IFood;
 
 public class TECellarShelf extends TileEntity implements IInventory {
@@ -125,7 +123,7 @@ public class TECellarShelf extends TileEntity implements IInventory {
 							} else if(currentDecay == 0) {
 								currentDecay = (tag.getFloat("foodWeight") * 0.0025f) * TFCOptions.decayMultiplier;
 							} else {
-								double foodDecayRate = Global.FOOD_DECAY_RATE - 1;
+								double foodDecayRate = TFCOptions.foodDecayRate - 1;
 								foodDecayRate = foodDecayRate * (decayRate * enviromentalDecay * protMult * TFCOptions.decayMultiplier);
 								currentDecay = (float) (currentDecay * (foodDecayRate + 1));
 							}

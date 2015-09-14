@@ -23,7 +23,7 @@ public class BlockIceBunker extends BlockContainer {
 	
 	public BlockIceBunker(Material material) {
 		super(material);
-		this.setCreativeTab(TFCTabs.TFCDevices);
+		this.setCreativeTab(TFCTabs.TFC_DEVICES);
 		this.setStepSound(Block.soundTypeWood);
 	}
 	

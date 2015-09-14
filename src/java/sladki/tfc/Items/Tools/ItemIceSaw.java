@@ -18,7 +18,7 @@ import com.google.common.collect.Sets;
 
 public class ItemIceSaw extends ItemTerraTool {
 
-	private static final Set<Block> blocksEffectiveAgainst = Sets.newHashSet(new Block[]{TFCBlocks.Ice});
+	private static final Set<Block> blocksEffectiveAgainst = Sets.newHashSet(new Block[]{TFCBlocks.ice});
 
 	
 	public ItemIceSaw(ToolMaterial material) {
@@ -44,7 +44,7 @@ public class ItemIceSaw extends ItemTerraTool {
 			return false;
 		}
 		
-		if(block == TFCBlocks.Ice || block == ModManager.IceBlock) {
+		if(block == TFCBlocks.ice || block == ModManager.IceBlock) {
 			EntityItem entityItem = new EntityItem(world,
 					x + 0.5, y + 0.5, z + 0.5, new ItemStack(ModManager.IceBlock, 1));
 			world.spawnEntityInWorld(entityItem);

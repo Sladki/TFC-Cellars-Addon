@@ -9,7 +9,7 @@ public class ItemBlockIce extends ItemTerraBlock {
 
 	public ItemBlockIce(Block block) {
 		super(block);
-		this.setCreativeTab(TFCTabs.TFCBuilding);
+		this.setCreativeTab(TFCTabs.TFC_BUILDING);
 	}
 	
 }

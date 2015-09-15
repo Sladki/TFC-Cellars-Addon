@@ -27,7 +27,7 @@ public class BlockCellarShelf extends BlockContainer {
 
 	public BlockCellarShelf(Material material) {
 		super(material);
-		this.setCreativeTab(TFCTabs.TFCDevices);
+		this.setCreativeTab(TFCTabs.TFC_DEVICES);
 		this.setStepSound(Block.soundTypeWood);
 		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
 	}

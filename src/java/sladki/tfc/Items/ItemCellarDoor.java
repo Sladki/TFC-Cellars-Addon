@@ -21,7 +21,7 @@ public class ItemCellarDoor extends ItemTerra {
 		super();
 		this.maxStackSize = 1;
 		this.setUnlocalizedName("CellarDoor");
-		this.setCreativeTab(TFCTabs.TFCBuilding);
+		this.setCreativeTab(TFCTabs.TFC_BUILDING);
 		this.setTextureName(Cellars.MODID + ":" + "cellarDoor");
 	}
 	

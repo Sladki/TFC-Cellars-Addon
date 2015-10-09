@@ -7,22 +7,26 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import sladki.tfc.TileEntities.TECellarShelf;
 
+import com.bioxx.tfc.Containers.Slots.SlotCookableFoodOnly;
 import com.bioxx.tfc.Containers.Slots.SlotFoodOnly;
+import com.bioxx.tfc.api.TFCItems;
+import com.bioxx.tfc.api.Enums.EnumSize;
 
 public class ContainerCellarShelf extends Container {
 
 	private TECellarShelf tileEntity;
 	
-	public ContainerCellarShelf(InventoryPlayer player, TECellarShelf tileEntity) {
-		
-		for(int slot = 0; slot <= 6; slot++) {
-			addSlotToContainer(new SlotFoodOnly(tileEntity, slot, 26 + (slot * 18), 25));
+	public ContainerCellarShelf(InventoryPlayer player, TECellarShelf tileEntity) {	
+		for(int y = 0; y < 2; y++) {
+			for(int x = 0; x < 7; x++) {
+				addSlotToContainer(new SlotCookableFoodOnly(tileEntity,
+						x + (y * 7),		//Slot id
+						26 + (x * 18),		//Slot x
+						25 + (y * 18)		//Slot y
+				).setSize(EnumSize.HUGE));
+			}
 		}
-		
-		for(int slot = 0; slot <= 6; slot++) {
-			addSlotToContainer(new SlotFoodOnly(tileEntity, slot + 7, 26 + (slot * 18), 43));
-		}
-		
+
 		bindPlayerInventory(player);
 	}
 	
@@ -58,8 +62,10 @@ public class ContainerCellarShelf extends Container {
                     if (stackInSlot.stackSize == stack.stackSize) {
                             return null;
                     }
+                    
                     slotObject.onPickupFromSlot(player, stackInSlot);
             }
+            
             return stack;
     }
 	

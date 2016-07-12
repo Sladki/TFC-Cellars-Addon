@@ -8,7 +8,6 @@ public class ModConfig {
 	
 	public static boolean isDebugging;
 	public static float coolantConsumptionMultiplier;
-	public static int cellarTemperature;
 	public static int iceHouseTemperature;
 
 	public static void loadConfig(FMLPreInitializationEvent event) {
@@ -17,7 +16,6 @@ public class ModConfig {
 		config.load();
 		
 		isDebugging = config.get(Configuration.CATEGORY_GENERAL, "Debug", false).getBoolean(false);
-		cellarTemperature = config.get(Configuration.CATEGORY_GENERAL, "TemperatureCellar", 5).getInt(5);
 		iceHouseTemperature = config.get(Configuration.CATEGORY_GENERAL, "TemperatureIceHouse", 1).getInt(1);
 		
 		Property coolantConsumptionMultiplierProperty = config.get(Configuration.CATEGORY_GENERAL, "CoolantConsumptionMultiplier", 100);

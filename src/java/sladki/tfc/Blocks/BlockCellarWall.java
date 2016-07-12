@@ -1,11 +1,17 @@
 package sladki.tfc.Blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import sladki.tfc.Cellars;
-
 import com.bioxx.tfc.Blocks.BlockTerra;
 import com.bioxx.tfc.Core.TFCTabs;
+import com.bioxx.tfc.Core.TFC_Climate;
+import com.bioxx.tfc.Core.TFC_Time;
+import com.bioxx.tfc.TileEntities.TEBarrel;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
+import sladki.tfc.Cellars;
 
 public class BlockCellarWall extends BlockTerra {
 

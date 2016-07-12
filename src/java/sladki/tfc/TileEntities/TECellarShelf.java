@@ -14,132 +14,79 @@ import net.minecraftforge.common.util.Constants;
 
 import com.bioxx.tfc.Core.TFC_Core;
 import com.bioxx.tfc.Core.TFC_Time;
+import com.bioxx.tfc.Items.ItemTerra;
+import com.bioxx.tfc.Items.ItemBlocks.ItemTerraBlock;
+import com.bioxx.tfc.api.Food;
 import com.bioxx.tfc.api.TFCOptions;
+import com.bioxx.tfc.api.TFC_ItemHeat;
 import com.bioxx.tfc.api.Interfaces.IFood;
 
 public class TECellarShelf extends TileEntity implements IInventory {
 
 	private ItemStack[] inventory;
 	
-	private boolean inCellar = false;
-	private float temperature = 0;
+	private int cellarTick = -240;	//Because a bunker may be not in the same chunk
+	private float temperature = -1;
 	
 	private int updateTickCounter = 120;
 	
+	
+	
 	public TECellarShelf() {
 		inventory = new ItemStack[getSizeInventory()];
-	}
-	
-	/*public void getShelfInfo(EntityPlayer player) {
-		player.addChatMessage(new ChatComponentText("In cellar: " + inCellar));
-		player.addChatMessage(new ChatComponentText("Temperature: " + temperature));
-	}*/
-	
+	}	
 	
 	@Override
 	public void updateEntity() {
 		if(worldObj.isRemote) {
 			return;
 		}
+			
 
-		//Wait 120 ticks for cellars updates to prevent ticking decay before
-		if(inCellar) {
-			decayTick();
-		} else {
-			if(updateTickCounter > 0) {
-				updateTickCounter--;
+		if(updateTickCounter % 5 == 0) {
+			handleItemTicking();
+		}
+		
+		updateTickCounter++;
+	}
+	
+	private void handleItemTicking() {
+		float envDecay = 1f;
+		
+		if(cellarTick >= 0) {
+			if(cellarTick > 0) {
+				envDecay = TFC_Core.getEnvironmentalDecay(temperature);
+				cellarTick--;
 				
-				//To ensure correct work for cellars built in multiple chunks
-				if(updateTickCounter == 100) {
-					World world = this.getWorldObj();
-					
-					world.getBlock(xCoord + 4, 0, zCoord);
-					world.getBlock(xCoord - 4, 0, zCoord);
-					world.getBlock(xCoord, 0, zCoord + 4);
-					world.getBlock(xCoord, 0, zCoord - 4);
-					
-					world.getBlock(xCoord + 4, 0, zCoord - 4);
-					world.getBlock(xCoord + 4, 0, zCoord + 4);
-					world.getBlock(xCoord - 4, 0, zCoord - 4);
-					world.getBlock(xCoord - 4, 0, zCoord + 4);
+				//Syncing
+				if(cellarTick == 0) {
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
-				return;
+			}
+
+			TFC_Core.handleItemTicking(this, worldObj, xCoord, yCoord, zCoord, envDecay);
+		} else {
+			cellarTick++;
+			
+			//Syncing syncing
+			if(cellarTick == 0) {
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
 			
-			TFC_Core.handleItemTicking(this, worldObj, xCoord, yCoord, zCoord);
+			return;			
 		}
 	}
 	
-	public void updateShelf(boolean inCellar, float temp) {
-		this.inCellar		= inCellar;
-		this.temperature	= temp;
+	public void updateShelf(float temp) {
+		cellarTick = 100;
+		temperature	= temp;
+		
+		//Syncing syncing diving diving
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
-	private void decayTick() {
-		for(int i = 0; i < 14; i++) {
-			ItemStack itemStack = inventory[i];
-			if( itemStack != null) {
-				if(itemStack.getItem() instanceof IFood) {
-					
-					NBTTagCompound tag = itemStack.getTagCompound();
-					if(tag != null &&(tag.hasKey("foodWeight") && tag.hasKey("foodDecay"))) {
-						
-						if(tag.getInteger("decayTimer") < TFC_Time.getTotalHours()) {
-							
-							int timeDelta = (int) (TFC_Time.getTotalHours() - tag.getInteger("decayTimer"));
-							float protMult = 1;
-							
-							if(TFCOptions.useDecayProtection) {
-								if(timeDelta > TFCOptions.decayProtectionDays * 24) {
-									tag.setInteger("decayTimer", (int) TFC_Time.getTotalHours() - 24);
-								} else if(timeDelta > 24) {
-									protMult = 1 - (timeDelta / (TFCOptions.decayProtectionDays * 24));
-								}
-							}
-							
-							float currentDecay = tag.getFloat("foodDecay");
-							float enviromentalDecay = 0;
-							float decayRate = 1.0f;
-							
-							float weight = tag.getFloat("foodWeight");
-							
-							if(temperature > 0) {
-								enviromentalDecay = 2 * (1.0f - (15.0f / (15.0f + temperature)));
-							}
-							
-							if(tag.hasKey("decayRate")) {
-								decayRate = tag.getFloat("decayRate");
-							} else {
-								decayRate = ((IFood) itemStack.getItem()).getDecayRate(itemStack);
-							}
-							
-							if(currentDecay < 0) {
-								float decayIncrement = decayRate * enviromentalDecay;
-								if(currentDecay + decayIncrement < 0) {
-									currentDecay = currentDecay + decayIncrement;
-								} else {
-									currentDecay = 0;
-								}
-							} else if(currentDecay == 0) {
-								currentDecay = (tag.getFloat("foodWeight") * 0.0025f) * TFCOptions.decayMultiplier;
-							} else {
-								double foodDecayRate = TFCOptions.foodDecayRate - 1;
-								foodDecayRate = foodDecayRate * (decayRate * enviromentalDecay * protMult * TFCOptions.decayMultiplier);
-								currentDecay = (float) (currentDecay * (foodDecayRate + 1));
-							}
-							tag.setInteger("decayTimer", (tag.getInteger("decayTimer") + 1));
-							tag.setFloat("foodDecay", currentDecay);
-						}
-						
-						if(tag.getFloat("foodDecay") / tag.getFloat("foodWeight") > 0.9f) {
-							inventory[i] = null;
-						} else {
-							inventory[i].setTagCompound(tag);
-						}
-					}		
-				}
-			}
-		}
+	public float getTemperature() {
+		return temperature;
 	}
 	
 	@Override
@@ -211,6 +158,15 @@ public class TECellarShelf extends TileEntity implements IInventory {
 		return true;
 	}
 	
+	private void writeSyncData(NBTTagCompound tagCompound) {
+		float temp = (cellarTick <= 0) ? -1000 : temperature;
+		tagCompound.setFloat("Temperature", temp);
+	}
+	
+	private void readSyncData(NBTTagCompound tagCompound) {
+		temperature = tagCompound.getFloat("Temperature");
+	}
+	
 	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
@@ -246,12 +202,14 @@ public class TECellarShelf extends TileEntity implements IInventory {
 	public Packet getDescriptionPacket() {
 		NBTTagCompound tagCompound = new NBTTagCompound();
 		writeToNBT(tagCompound);
+		writeSyncData(tagCompound);
 		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, tagCompound);
 	}
 	
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
 		readFromNBT(packet.func_148857_g());
+		readSyncData(packet.func_148857_g());
 	}
 	
 }
